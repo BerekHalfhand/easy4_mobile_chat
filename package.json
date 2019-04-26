@@ -1,0 +1,10 @@
+{
+  "name": "mobile_chat",
+  "version": "0.1",
+  "description": "Easy4 suport chat",
+  "main": "server.js",
+  "repository": "http://10.11.12.141/evgeniy/mobile-chat",
+  "author": "Yuri Drobkov",
+  "license": "MIT",
+  "private": true
+}
