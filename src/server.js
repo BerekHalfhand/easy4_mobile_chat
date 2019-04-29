@@ -1,22 +1,24 @@
-var express = require('express');
-var bodyParser = require('body-parser')
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var mongoose = require('mongoose');
+const express = require('express');
+const bodyParser = require('body-parser')
+const app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const mongoose = require('mongoose');
+
+const config = require('../config');
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 
-var Message = mongoose.model('Message',{
+const Message = mongoose.model('Message',{
   name : String,
   message : String
 })
 
-const dbUrl = 'mongodb://127.0.0.1:27017/mobile-chat';
+const dbUrl = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
 
-mongoose.connect(dbUrl ,(err) => {
+mongoose.connect(dbUrl, { useNewUrlParser: true }, (err) => {
   console.log('mongodb connected',err);
 });
 
@@ -32,7 +34,7 @@ app.get('/messages', (req, res) => {
 
 
 app.get('/messages/:user', (req, res) => {
-  var user = req.params.user
+  const user = req.params.user
   Message.find({name: user},(err, messages)=> {
     res.send(messages);
   })
@@ -51,6 +53,7 @@ app.post('/messages', (req, res) => {
 });
 
 
-var server = http.listen(3000, () => {
+const server = http.listen(3000, () => {
   console.log('server is running on port', server.address().port);
+  console.log('environment', process.env.NODE_ENV);
 });
