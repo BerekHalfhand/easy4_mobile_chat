@@ -1,0 +1,29 @@
+---
+- hosts:
+    - dev-base-01
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: 'PULL AND RUN'
+      docker_container:
+        name: '{{IMG_NAME}}'
+        image: '{{DOCKER_REGISTER}}{{IMG_NAME}}'
+        pull: true
+        restart: yes
+        state: started
+        command: bash -c "node dist/index.js | pino-gelf log -h {{LOG_GRAYLOG_HOST}} -p 12201 -e"
+        env:
+          LOG_LEVEL: '{{LOG_LEVEL}}'
+          REST_PORT: '{{REST_PORT}}'
+          NODE_ENV: '{{NODE_ENV}}'
+          RABBIT_URI: '{{RABBIT_URI }}'
+          RABBIT_SECRET: '{{RABBIT_SECRET}}'
+          MONGO_URI: '{{MONGO_URI}}'
+          JWT_ACCESS_EXPIRES: '{{JWT_ACCESS_EXPIRES}}'
+          JWT_SECRET: '{{JWT_SECRET}}'
+          JWT_REFRESH_EXPIRES: '{{JWT_REFRESH_EXPIRES}}'
+          MONGO_COLLECTION_PREFIX: '{{MONGO_COLLECTION_PREFIX}}'
+          ESIA_CLIENT_ID: '{{ESIA_CLIENT_ID}}'
+          ESIA_REDIRECT_URI: '{{ESIA_REDIRECT_URI}}'
+        ports:
+          - '{{REST_PORT}}:{{REST_PORT}}'
