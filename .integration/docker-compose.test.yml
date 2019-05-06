@@ -1,0 +1,29 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    hostname: "mongo"
+  rabbit:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+  app:
+    image: ${IMG_NAME}
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - LOG_LEVEL=${LOG_LEVEL}
+      - RABBIT_URI=${RABBIT_URI}
+      - MONGO_URI=${MONGO_URI}
+      - WAIT_HOSTS=${WAIT_HOSTS}
+      - JWT_ACCESS_EXPIRES=${JWT_ACCESS_EXPIRES}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_EXPIRES=${JWT_REFRESH_EXPIRES}
+      - MONGO_COLLECTION_PREFIX=${MONGO_COLLECTION_PREFIX}
+    links:
+      - mongo
+      - rabbit
+    depends_on:
+      - mongo
+      - rabbit
+    command: bash -c "/wait && npm run test:ci"
