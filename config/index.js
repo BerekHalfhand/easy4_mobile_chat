@@ -4,14 +4,28 @@ const config = require('dotenv').config({ path: envFile });
 
 if (config.error) {
   throw config.error;
-}
+};
 
-// export const httpPort = parseInt(process.env.REST_PORT, 10) || 8081;
-//
-// export const SERVICE_NAME = 'b2c-profile';
-//
-// export const id = `${SERVICE_NAME}-service`;
-//
+const SERVICE_NAME = 'mobile-chat';
+
+console.log(process.env.MONGO_COLLECTION_PREFIX);
+
+module.exports = {
+  id: `${SERVICE_NAME}-service`,
+  env: process.env.NODE_ENV,
+  http: {
+    port: parseInt(process.env.REST_PORT, 10) || 3000,
+  },
+  mongo: {
+    // collectionPrefix:
+    //   process.env.MONGO_COLLECTION_PREFIX || `${SERVICE_NAME}-service-`,
+    // data: {
+      uri: process.env.MONGO_URI
+      || `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_COLLECTION_NAME}`
+      || 'mongodb://localhost:27017/data',
+    // },
+  }
+};
 // export const rabbit = {
 //   url: process.env.RABBIT_URI || 'amqp://localhost:5672',
 //
@@ -45,7 +59,9 @@ if (config.error) {
 //   collectionPrefix:
 //     process.env.MONGO_COLLECTION_PREFIX || `${SERVICE_NAME}-service-`,
 //   data: {
-//     uri: process.env.MONGO_URI || 'mongodb://localhost:27017/data',
+//     uri: process.env.MONGO_URI
+//     || `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_COLLECTION_NAME}`
+//     || 'mongodb://localhost:27017/data',
 //   },
 // };
 //
