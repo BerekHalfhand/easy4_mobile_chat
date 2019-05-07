@@ -1,6 +1,13 @@
+const fs = require('fs');
+
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
 
-const config = require('dotenv').config({ path: envFile });
+let config = require('dotenv');
+
+if (fs.existsSync(envFile)) {
+  console.log(envFile, 'exists');
+  config = config.config({ path: envFile });
+} else config.config();
 
 if (config.error) {
   throw config.error;
@@ -17,13 +24,9 @@ module.exports = {
     port: parseInt(process.env.REST_PORT, 10) || 3000,
   },
   mongo: {
-    // collectionPrefix:
-    //   process.env.MONGO_COLLECTION_PREFIX || `${SERVICE_NAME}-service-`,
-    // data: {
-      uri: process.env.MONGO_URI
-      || `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_COLLECTION_NAME}`
-      || 'mongodb://localhost:27017/data',
-    // },
+    uri: process.env.MONGO_URI
+    || `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_COLLECTION_NAME}`
+    || 'mongodb://localhost:27017/data',
   }
 };
 // export const rabbit = {
