@@ -13,13 +13,7 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV}
       - LOG_LEVEL=${LOG_LEVEL}
-      - RABBIT_URI=${RABBIT_URI}
       - MONGO_URI=${MONGO_URI}
-      - WAIT_HOSTS=${WAIT_HOSTS}
-      - JWT_ACCESS_EXPIRES=${JWT_ACCESS_EXPIRES}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_REFRESH_EXPIRES=${JWT_REFRESH_EXPIRES}
-      - MONGO_COLLECTION_PREFIX=${MONGO_COLLECTION_PREFIX}
     links:
       - mongo
       - rabbit
