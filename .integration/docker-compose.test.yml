@@ -26,4 +26,4 @@ services:
     depends_on:
       - mongo
       - rabbit
-    command: bash -c "/wait && npm run test:ci"
+    command: bash -c "/wait && yarn test"
