@@ -8,8 +8,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=prod nodemon src/server.js",
-    "start:dev": "cross-env NODE_ENV=dev nodemon src/server.js",
+    "start": "cross-env NODE_ENV=prod nodemon src/server_alt.js",
+    "start:dev": "cross-env NODE_ENV=dev nodemon src/server_alt.js",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --verbose --runInBand --forceExit"
   },
   "dependencies": {
