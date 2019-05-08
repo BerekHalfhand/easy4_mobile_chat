@@ -24,6 +24,7 @@ module.exports = {
     port: parseInt(process.env.REST_PORT, 10) || 3000,
   },
   mongo: {
+    collectionPrefix: process.env.MONGO_COLLECTION_PREFIX || `${SERVICE_NAME}-service-`,
     uri: process.env.MONGO_URI
     || `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_COLLECTION_NAME}`
     || 'mongodb://localhost:27017/data',
