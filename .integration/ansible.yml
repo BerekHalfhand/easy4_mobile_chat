@@ -11,7 +11,7 @@
         pull: true
         restart: yes
         state: started
-        command: bash -c "node dist/index.js | pino-gelf log -h {{LOG_GRAYLOG_HOST}} -p 12201 -e"
+        command: bash -c "yarn start"
         env:
           LOG_LEVEL: '{{LOG_LEVEL}}'
           REST_PORT: '{{REST_PORT}}'

@@ -11,10 +11,7 @@ app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 
-const Message = mongoose.model('Message',{
-  name : String,
-  message : String
-})
+const Message  = require('./models/message.ts');
 
 mongoose.connect(config.mongo.uri, { useNewUrlParser: true }, (err) => {
   console.log('mongodb connected',config);
