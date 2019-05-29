@@ -30,7 +30,7 @@ app.get('/messages', (req, res) => {
 
 app.get('/messages/:user', (req, res) => {
   const user = req.params.user
-  Message.find({name: user},(err, messages)=> {
+  Message.find({author: user},(err, messages)=> {
     res.send(messages);
   })
 })

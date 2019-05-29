@@ -2,12 +2,17 @@ const mongoose = require('mongoose');
 const config = require('../../config');
 
 const messageSchema = new mongoose.Schema({
-  name: {
+  author: {
     type: String,
     required: true,
   },
 
-  message: {
+  chatroom: {
+    type: String,
+    required: false,
+  },
+
+  body: {
     type: String,
     required: false,
   },
