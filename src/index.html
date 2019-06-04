@@ -37,12 +37,12 @@
         $("#messages").append(`<h4> ${message.author} </h4> <p> ${message.body} </p>`)
     }
     function getMessages(){
-      $.get('mobile-chat/messages', (data) => {
+      $.get('/mobile-chat/messages', (data) => {
         data.forEach(addMessages);
       })
     }
     function sendMessage(message){
-      $.post('mobile-chat/messages', message)
+      $.post('/mobile-chat/messages', message)
     }
 </script>
 </body>

@@ -44,7 +44,7 @@ app.post(`/${config.name}/messages`, (req, res) => {
   message.save((err) => {
     console.log('/messages:post');
     if(err)
-      sendStatus(500);
+      res.sendStatus(500);
     io.emit('message', req.body);
     res.sendStatus(200);
   })
