@@ -17,26 +17,29 @@ mongoose.connect(config.mongo.uri, { useNewUrlParser: true }, (err) => {
   console.log('mongodb connected',config);
 });
 
-io.on('connection', () =>{
+io.on('connection', () => {
   console.log('a user is connected')
 });
 
-app.get('/messages', (req, res) => {
+app.get(`/${config.name}`, function (req, res) {
+  res.sendFile('index.html' , { root : __dirname});
+})
+
+app.get(`/${config.name}/messages`, (req, res) => {
   Message.find({},(err, messages)=> {
     res.send(messages);
   })
 })
 
 
-app.get('/messages/:user', (req, res) => {
+app.get(`/${config.name}/messages/:user`, (req, res) => {
   const user = req.params.user
   Message.find({author: user},(err, messages)=> {
     res.send(messages);
   })
 })
 
-
-app.post('/messages', (req, res) => {
+app.post(`/${config.name}/messages`, (req, res) => {
   let message = new Message(req.body);
   message.save((err) => {
     console.log('/messages:post');

@@ -19,6 +19,7 @@ console.log(process.env.MONGO_COLLECTION_PREFIX);
 
 module.exports = {
   id: `${SERVICE_NAME}-service`,
+  name: SERVICE_NAME,
   env: process.env.NODE_ENV,
   http: {
     port: parseInt(process.env.REST_PORT, 10) || 3000,
