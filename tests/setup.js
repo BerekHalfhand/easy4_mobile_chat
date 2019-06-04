@@ -6,7 +6,6 @@ const mongooseController = require('../src/controllers/mongoose');
 beforeAll(async () => {
   await mongooseController.init(() => {});
   // await rabbitController.init(rpcHandler);
-
   // await Promise.delay(3000);
 });
 
