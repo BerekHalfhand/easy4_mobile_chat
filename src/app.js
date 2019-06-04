@@ -41,7 +41,10 @@ app.post(`/${config.name}/messages`, (req, res) => {
     if(err)
       res.sendStatus(500);
     io.emit('message', req.body);
-    res.sendStatus(200);
+    res.send({
+      success: true,
+      message: req.body
+    });
   })
 });
 
