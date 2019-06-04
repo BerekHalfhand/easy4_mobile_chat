@@ -38,7 +38,7 @@
     }
     function getMessages(){
       $.get('/mobile-chat/messages', (data) => {
-        data.forEach(addMessages);
+        data.result.forEach(addMessages);
       })
     }
     function sendMessage(message){
