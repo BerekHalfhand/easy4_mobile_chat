@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const config = require('../../config');
+// const mongoose = require('mongoose');
+// const config = require('../../config');
 
 const chatroomSchema = new mongoose.Schema({
   name: {
