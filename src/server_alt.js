@@ -31,7 +31,6 @@ app.get(`/${config.name}/messages`, (req, res) => {
   })
 })
 
-
 app.get(`/${config.name}/messages/:user`, (req, res) => {
   const user = req.params.user
   Message.find({author: user},(err, messages)=> {
