@@ -8,13 +8,14 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=prod node src/server.js",
-    "start:dev": "cross-env NODE_ENV=dev nodemon src/server.js",
+    "start": "cross-env NODE_ENV=prod node -r esm src/server.js",
+    "start:dev": "cross-env NODE_ENV=dev nodemon -r esm src/server.js",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --verbose --runInBand --forceExit"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^7.0.0",
+    "esm": "^3.2.25",
     "express": "^4.16.4",
     "http": "^0.0.0",
     "mongoose": "^5.5.4",

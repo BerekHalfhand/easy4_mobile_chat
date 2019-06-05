@@ -1,11 +1,11 @@
-const success = (payload) => ({
+export const success = (payload) => ({
   statusCode: 200,
   result: payload
 })
 
-const failure = (payload) => ({
+export const failure = (errors) => ({
   statusCode: 500,
-  error: payload
+  ...errors
 })
 
-module.exports = {success, failure};
+export default {success, failure};

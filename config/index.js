@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
 
@@ -17,7 +17,7 @@ const SERVICE_NAME = 'mobile-chat';
 
 console.log(process.env.MONGO_COLLECTION_PREFIX);
 
-module.exports = {
+export default {
   id: `${SERVICE_NAME}-service`,
   name: SERVICE_NAME,
   env: process.env.NODE_ENV,

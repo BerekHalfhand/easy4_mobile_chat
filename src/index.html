@@ -19,6 +19,7 @@
         <textarea id = "body" class="form-control" placeholder="Your Message Here"></textarea>
         <br>
         <button id="send" class="btn btn-success">Send</button>
+        <button id="chatroom" class="btn btn-success">Chatroom</button>
     </div>
     <div id="messages">
 
@@ -30,6 +31,11 @@
         $("#send").click(()=>{
             sendMessage({author: $("#author").val(), body: $("#body").val()});
         })
+
+        $("#chatroom").click(()=>{
+            sendChatroom({name: '321', author: '2312312e2c22f23f'});
+        })
+
         getMessages()
     })
     socket.on('message', addMessages)
@@ -43,6 +49,10 @@
     }
     function sendMessage(message){
       $.post('/mobile-chat/messages', message)
+    }
+    function sendChatroom(chatroom){
+      console.log(chatroom);
+      $.post('/mobile-chat/chatrooms', chatroom)
     }
 </script>
 </body>

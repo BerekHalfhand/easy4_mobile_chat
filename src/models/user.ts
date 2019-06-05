@@ -1,3 +1,6 @@
+import mongoose from 'mongoose';
+import config from '../../config';
+
 const userSchema = new mongoose.Schema({
   login: {
     type: String,

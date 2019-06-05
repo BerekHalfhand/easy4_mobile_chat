@@ -1,5 +1,5 @@
-// const mongoose = require('mongoose');
-// const config = require('../../config');
+import mongoose from 'mongoose';
+import config from '../../config';
 
 const chatroomSchema = new mongoose.Schema({
   name: {
@@ -8,7 +8,7 @@ const chatroomSchema = new mongoose.Schema({
   },
 
   participants: {
-    type: Array,
+    type: [String],
     required: false,
   },
 
