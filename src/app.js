@@ -29,9 +29,9 @@ app.get(`/${config.name}/messages`, (req, res) => {
   })
 })
 
-app.get(`/${config.name}/messages/:user`, (req, res) => {
-  const user = req.params.user
-  Message.find({author: user},(err, messages)=> {
+app.get(`/${config.name}/messages/:chatroom`, (req, res) => {
+  const chatroom = req.params.chatroom
+  Message.find({chatroom},(err, messages)=> {
     res.send(response.success(messages));
   })
 })
@@ -42,13 +42,23 @@ app.post(`/${config.name}/chatrooms`, (req, res) => {
   if (body.author) body.participants = [body.author];
   console.log('/chatrooms:post', body);
 
-  let chatroom = new Chatroom(body);
-  chatroom.save((err) => {
-    if(err)
-      res.send(response.failure(err));
-    // io.emit('message', req.body);
-    res.send(response.success(body));
+  Chatroom.findOne({name: body.name},(err, chatroom)=> {
+    console.log('chatroom', chatroom);
+
+    if (!chatroom) {
+
+      let newChatroom = new Chatroom(body);
+      newChatroom.save((err) => {
+        if(err)
+          res.send(response.failure(err));
+        // io.emit('message', req.body);
+        res.send(response.success(body));
+      })
+
+    } else res.send(response.success(chatroom));
   })
+
+
 });
 
 app.post(`/${config.name}/messages`, (req, res) => {

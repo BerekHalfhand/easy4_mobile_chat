@@ -29,18 +29,22 @@
    var socket = io();
     $(() => {
         $("#send").click(()=>{
-            sendMessage({author: $("#author").val(), body: $("#body").val()});
+          sendMessage({
+            author: $("#author").val(),
+            chatroom: $("#author").val(),
+            body: $("#body").val()
+          });
         })
 
         $("#chatroom").click(()=>{
-            sendChatroom({name: '321', author: '2312312e2c22f23f'});
+          sendChatroom({name: '321-123', author: '321-123'});
         })
 
         getMessages()
     })
     socket.on('message', addMessages)
     function addMessages(message){
-        $("#messages").append(`<h4> ${message.author} </h4> <p> ${message.body} </p>`)
+      $("#messages").append(`<h4> ${message.author} </h4> <p> ${message.body} </p>`)
     }
     function getMessages(){
       $.get('/mobile-chat/messages', (data) => {
