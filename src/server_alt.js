@@ -1,25 +1,42 @@
-const express = require('express');
-const bodyParser = require('body-parser')
-const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-const mongoose = require('mongoose');
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import config from '../config';
+import response from './response';
 
-const config = require('../config');
+const express = require('express');
+const app = express();
+const http = require('http');
+const socketIO = require('socket.io');
+const server = http.createServer(app);
+const io = socketIO(server);
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}))
 
 const Message  = require('./models/message.ts');
+const Chatroom  = require('./models/chatroom.ts');
+
+const PORT = config.http.port || 3000;
 
 mongoose.connect(config.mongo.uri, { useNewUrlParser: true }, (err) => {
   console.log('mongodb connected',config);
 });
 
-io.on('connection', () => {
-  console.log('a user is connected')
+io.on('connection', (socket) =>{
+  console.log('a user is connected on', socket.id)
 });
+
+const sendMessage = (msg, res) => {
+  console.log('sendMessage', msg);
+  let message = new Message(msg);
+  message.save((err) => {
+    if(err)
+      res.send(response.failure(err));
+    io.emit('message', msg);
+    res.send(response.success(msg));
+  })
+}
 
 app.get(`/${config.name}`, function (req, res) {
   res.sendFile('index.html' , { root : __dirname});
@@ -27,30 +44,48 @@ app.get(`/${config.name}`, function (req, res) {
 
 app.get(`/${config.name}/messages`, (req, res) => {
   Message.find({},(err, messages)=> {
-    res.send(messages);
+    res.send(response.success(messages));
   })
 })
 
-app.get(`/${config.name}/messages/:user`, (req, res) => {
-  const user = req.params.user
-  Message.find({author: user},(err, messages)=> {
-    res.send(messages);
+app.get(`/${config.name}/messages/:chatroom`, (req, res) => {
+  const chatroom = req.params.chatroom
+  Message.find({chatroom},(err, messages)=> {
+    res.send(response.success(messages));
   })
 })
 
-app.post(`/${config.name}/messages`, (req, res) => {
-  let message = new Message(req.body);
-  message.save((err) => {
-    console.log('/messages:post');
-    if(err)
-      res.sendStatus(500);
-    io.emit('message', req.body);
-    res.sendStatus(200);
+app.post(`/${config.name}/chatrooms`, (req, res) => {
+  console.log('/chatrooms:post', req.body);
+  let body = req.body;
+  if (body.author) body.participants = [body.author];
+  console.log('/chatrooms:post', body);
+
+  Chatroom.findOne({name: body.name},(err, chatroom)=> {
+    console.log('chatroom', chatroom);
+
+    if (!chatroom) {
+
+      let newChatroom = new Chatroom(body);
+      newChatroom.save((err) => {
+        if(err)
+          res.send(response.failure(err));
+        sendMessage({
+          chatroom: newChatroom._id,
+          ...config.welcomeMessage
+        }, res)
+      })
+
+    } else res.send(response.success(chatroom));
   })
 });
 
+app.post(`/${config.name}/messages`, (req, res) => {
+  console.log('/messages:post', req.body);
+  sendMessage(req.body, res);
+});
 
-const server = http.listen(3000, () => {
-  console.log('server is running on port', server.address().port);
+server.listen(PORT, () => {
+  console.log('server is running on port', PORT);
   console.log('environment', process.env.NODE_ENV);
 });

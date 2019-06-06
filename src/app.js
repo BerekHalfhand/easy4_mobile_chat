@@ -5,8 +5,10 @@ import response from './response';
 
 const express = require('express');
 const app = express();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const http = require('http');
+const socketIO = require('socket.io');
+const server = http.createServer(app);
+const io = socketIO(server);
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -62,8 +64,6 @@ app.post(`/${config.name}/chatrooms`, (req, res) => {
       newChatroom.save((err) => {
         if(err)
           res.send(response.failure(err));
-        // io.emit('message', req.body);
-        // res.send(response.success(body));
         sendMessage({
           chatroom: newChatroom._id,
           ...config.welcomeMessage
@@ -81,6 +81,4 @@ app.post(`/${config.name}/messages`, (req, res) => {
   sendMessage(req.body, res);
 });
 
-
-
-module.exports = app;
+export {app, server, io};

@@ -1,12 +1,13 @@
-const app = require('./app');
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+import config from '../config';
+import {app, server, io} from './app'
 
-io.on('connection', () =>{
-  console.log('a user is connected')
+const PORT = config.http.port || 3000;
+
+io.on('connection', (socket) =>{
+  console.log('a user is connected on', socket.id)
 });
 
-const server = http.listen(3000, () => {
-  console.log('server is running on port', server.address().port);
+server.listen(PORT, () => {
+  console.log('server is running on port', PORT);
   console.log('environment', process.env.NODE_ENV);
 });
