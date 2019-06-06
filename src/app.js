@@ -19,6 +19,17 @@ mongoose.connect(config.mongo.uri, { useNewUrlParser: true }, (err) => {
   console.log('mongodb connected',config);
 });
 
+const sendMessage = (msg, res) => {
+  console.log('sendMessage', msg);
+  let message = new Message(msg);
+  message.save((err) => {
+    if(err)
+      res.send(response.failure(err));
+    io.emit('message', msg);
+    res.send(response.success(msg));
+  })
+}
+
 app.get(`/${config.name}`, function (req, res) {
   res.sendFile('index.html' , { root : __dirname});
 })
@@ -52,7 +63,11 @@ app.post(`/${config.name}/chatrooms`, (req, res) => {
         if(err)
           res.send(response.failure(err));
         // io.emit('message', req.body);
-        res.send(response.success(body));
+        // res.send(response.success(body));
+        sendMessage({
+          chatroom: newChatroom._id,
+          ...config.welcomeMessage
+        }, res)
       })
 
     } else res.send(response.success(chatroom));
@@ -63,13 +78,7 @@ app.post(`/${config.name}/chatrooms`, (req, res) => {
 
 app.post(`/${config.name}/messages`, (req, res) => {
   console.log('/messages:post', req.body);
-  let message = new Message(req.body);
-  message.save((err) => {
-    if(err)
-      res.send(response.failure(err));
-    io.emit('message', req.body);
-    res.send(response.success(req.body));
-  })
+  sendMessage(req.body, res);
 });
 
 

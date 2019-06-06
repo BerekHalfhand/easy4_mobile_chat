@@ -29,6 +29,10 @@ export default {
     uri: process.env.MONGO_URI
     || `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_COLLECTION_NAME}`
     || 'mongodb://localhost:27017/data',
+  },
+  welcomeMessage: {
+    author: 'chatbot',
+    body: 'Добро пожаловать в Easy4'
   }
 };
 // export const rabbit = {
