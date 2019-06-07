@@ -1,4 +1,4 @@
-// import bodyParser from 'body-parser';
+import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import config from '../config';
 import response from './response';
@@ -11,9 +11,9 @@ const io = require('socket.io')(server);
 // const io = socketIO(3001);
 // const chat = io.of('/ws');
 
-// app.use(express.static(__dirname));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({extended: false}))
+app.use(express.static(__dirname));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
 
 const Message  = require('./models/message.ts');
 const Chatroom  = require('./models/chatroom.ts');
@@ -60,7 +60,11 @@ app.get(`/${config.name}/messages/:chatroom`, (req, res) => {
 
 app.post(`/${config.name}/chatrooms`, (req, res) => {
   console.log('/chatrooms:post', req.body);
-  let body = req.body;
+  if (!req || !req.body) {
+    console.warn('Invalid request!');
+    return false;
+  }
+  let {body} = req;
   if (body.author) body.participants = [body.author];
   console.log('/chatrooms:post', body);
 
