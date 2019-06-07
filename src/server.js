@@ -1,11 +1,11 @@
 import config from '../config';
-import {app, server, chat} from './app'
+import {app, server, io} from './app'
 
 const PORT = config.http.port || 3000;
 
-chat.on('connection', (socket) =>{
+io.on('connection', (socket) =>{
   console.log('a user is connected on', socket.id);
-  chat.emit('ready');
+  io.emit('ready');
 });
 
 server.listen(PORT, () => {

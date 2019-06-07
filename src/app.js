@@ -1,19 +1,19 @@
-import bodyParser from 'body-parser';
+// import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import config from '../config';
 import response from './response';
 
 const express = require('express');
 const app = express();
-const http = require('http');
 const socketIO = require('socket.io');
-const server = http.createServer(app);
-const io = socketIO(3001);
-const chat = io.of('/ws');
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+// const io = socketIO(3001);
+// const chat = io.of('/ws');
 
-app.use(express.static(__dirname));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}))
+// app.use(express.static(__dirname));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: false}))
 
 const Message  = require('./models/message.ts');
 const Chatroom  = require('./models/chatroom.ts');
@@ -28,7 +28,7 @@ const sendMessage = (msg, res) => {
   message.save((err) => {
     if(err)
       res.send(response.failure(err));
-    chat.emit('message', msg);
+    io.emit('message', msg);
     res.send(response.success(msg));
   })
 }
@@ -87,4 +87,4 @@ app.post(`/${config.name}/messages`, (req, res) => {
   sendMessage(req.body, res);
 });
 
-export {app, server, chat};
+export {app, server, io};
