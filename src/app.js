@@ -8,7 +8,8 @@ const app = express();
 const http = require('http');
 const socketIO = require('socket.io');
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(3001);
+const chat = io.of('/ws');
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -27,7 +28,7 @@ const sendMessage = (msg, res) => {
   message.save((err) => {
     if(err)
       res.send(response.failure(err));
-    io.emit('message', msg);
+    chat.emit('message', msg);
     res.send(response.success(msg));
   })
 }
@@ -81,4 +82,4 @@ app.post(`/${config.name}/messages`, (req, res) => {
   sendMessage(req.body, res);
 });
 
-export {app, server, io};
+export {app, server, chat};
