@@ -33,6 +33,14 @@ const sendMessage = (msg, res) => {
   })
 }
 
+const sendWelcomeMessage = (chatroom, res) => {
+  console.log('sendWelcomeMessage for', chatroom);
+  sendMessage({
+    chatroom,
+    ...config.welcomeMessage
+  }, res)
+}
+
 app.get(`/${config.name}`, function (req, res) {
   res.sendFile('index.html' , { root : __dirname});
 })
@@ -65,10 +73,7 @@ app.post(`/${config.name}/chatrooms`, (req, res) => {
       newChatroom.save((err) => {
         if(err)
           res.send(response.failure(err));
-        sendMessage({
-          chatroom: newChatroom._id,
-          ...config.welcomeMessage
-        }, res)
+        sendWelcomeMessage(newChatroom._id, res)
       })
 
     } else res.send(response.success(chatroom));
