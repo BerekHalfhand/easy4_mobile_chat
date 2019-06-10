@@ -7,6 +7,11 @@ const chatroomSchema = new mongoose.Schema({
     required: true,
   },
 
+  resolved: {
+    type: Boolean,
+    default: true,
+  },
+
   participants: {
     type: [String],
     required: false,

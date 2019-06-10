@@ -19,7 +19,9 @@
         <textarea id = "body" class="form-control" placeholder="Your Message Here"></textarea>
         <br>
         <button id="send" class="btn btn-success">Send</button>
-        <button id="chatroom" class="btn btn-success">Chatroom</button>
+        <button id="chatroom" class="btn btn-success">New Chatroom</button>
+        <button id="unresolved-chatrooms" class="btn btn-success">Get unresolved</button>
+        <button id="resolve" class="btn btn-success">Resolve</button>
     </div>
     <div id="messages">
 
@@ -30,6 +32,7 @@
     transports: ['websocket'],
     path: '/mobile-chat/ws',
   });
+  const user = '5ca45788583a411774e7b65e';
     $(() => {
         $("#send").click(()=>{
           sendMessage({
@@ -40,8 +43,11 @@
         })
 
         $("#chatroom").click(()=>{
-          sendChatroom({name: '321-123', author: '321-123'});
+          sendChatroom({name: user, author: user});
         })
+
+        $("#unresolved-chatrooms").click( () => getUnresolved() )
+        $("#resolve").click( () => resolve({chatroom: user}) )
 
         getMessages()
     })
@@ -50,7 +56,7 @@
       $("#messages").append(`<h4> ${message.author} </h4> <p> ${message.body} </p>`)
     }
     function getMessages(){
-      $.get('/mobile-chat/messages', (data) => {
+      $.get(`/mobile-chat/messages/${user}`, (data) => {
         data.result.forEach(addMessages);
       })
     }
@@ -60,6 +66,12 @@
     function sendChatroom(chatroom){
       console.log(chatroom);
       $.post('/mobile-chat/chatrooms', chatroom)
+    }
+    function getUnresolved(){
+      $.get('/mobile-chat/chatrooms/unresolved')
+    }
+    function resolve(chatroom){
+      $.post('/mobile-chat/chatrooms/unresolved', chatroom)
     }
 </script>
 </body>
