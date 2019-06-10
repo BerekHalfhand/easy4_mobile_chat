@@ -3,7 +3,7 @@ const { app, server, chat } = require('./app');
 
 const PORT = config.http.port || 3000;
 
-chat.on('connection', (socket) =>{
+chat.on('connection', (socket) => {
   console.log('a user is connected on', socket.id);
   chat.emit('ready');
 });

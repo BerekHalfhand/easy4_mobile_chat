@@ -9,7 +9,7 @@ const response = require('./response');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(3001);
+const io = socketIO(server);
 const chat = io.of('/ws');
 
 app.use(express.static(__dirname));
