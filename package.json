@@ -1,6 +1,5 @@
 {
   "name": "mobile_chat",
-  "version": "0.1",
   "description": "Easy4 suport chat",
   "main": "server.js",
   "repository": "http://10.11.12.141/evgeniy/mobile-chat",
@@ -8,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cross-env NODE_ENV=prod node -r esm src/server.js",
+    "start": "cross-env NODE_ENV=prod node src/server.js",
     "start:dev": "cross-env NODE_ENV=dev nodemon -r esm src/server.js",
     "test": "cross-env NODE_ENV=test jest --detectOpenHandles --coverage --verbose --runInBand --forceExit"
   },

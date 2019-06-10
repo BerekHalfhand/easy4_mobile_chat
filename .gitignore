@@ -3,3 +3,4 @@ coverage/
 .expo/*
 .env.*
 *.log
+*.swp

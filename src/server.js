@@ -1,5 +1,5 @@
-import config from '../config';
-import {app, server, chat} from './app'
+const config = require('../config');
+const { app, server, chat } = require('./app');
 
 const PORT = config.http.port || 3000;
 

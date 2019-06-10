@@ -11,7 +11,7 @@
         pull: true
         restart: yes
         state: started
-        command: bash -c "yarn start"
+        command: bash -c "npm start"
         env:
           LOG_LEVEL: '{{LOG_LEVEL}}'
           REST_PORT: '{{REST_PORT}}'
