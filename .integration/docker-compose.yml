@@ -1,0 +1,11 @@
+version: "3.0"
+services:
+  mongodb:
+    image: mongo:4
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - /var/lib/easy4/mobilechat:/data/db
+
+
