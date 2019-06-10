@@ -7,16 +7,19 @@ const express = require('express');
 const config  = require('../config');
 const response = require('./response');
 
+const Message = require('./models/message.js');
+const Chatroom = require('./models/chatroom.js');
+
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, {
+  transports: ['websocket'],
+  path: '/mobile-chat/ws',
+});
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
-
-const Message = require('./models/message.ts');
-const Chatroom = require('./models/chatroom.ts');
 
 mongoose.connect(config.mongo.uri, { useNewUrlParser: true }, (err) => {
   if (err) {

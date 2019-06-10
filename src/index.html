@@ -26,7 +26,10 @@
     </div>
 </div>
 <script>
-    var socket = io();
+  var socket = io({
+    transports: ['websocket'],
+    path: '/mobile-chat/ws',
+  });
     $(() => {
         $("#send").click(()=>{
           sendMessage({
