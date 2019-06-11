@@ -46,6 +46,7 @@ module.exports = (io) => {
     }
 
     let result = await handlers.getChatroom(body);
+    console.log(result);
     res.send(result);
   });
 
@@ -71,6 +72,18 @@ module.exports = (io) => {
     let result = await handlers.resolveChatroom(body.chatroom);
     res.send(result);
   })
+
+  // SOCKETS
+
+  io.on('connection', socket => {
+    console.log('a user is connected on', socket.id);
+    io.emit('ready');
+
+    socket.on("disconnect", () => {
+      console.log('a user has disconnected from', socket.id);
+    });
+  });
+
 
   return router;
 };

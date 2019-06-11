@@ -114,26 +114,27 @@ class Handlers {
     }
 
     console.log('getChatroom', body);
+    return new Promise((resolve, reject) => {
+      this.Chatroom.findOne({ name: body.name },(err, chatroom)=> {
+        console.log('chatroom', chatroom);
 
-    this.Chatroom.findOne({ name: body.name },(err, chatroom)=> {
-      console.log('chatroom', chatroom);
+        if (!chatroom) {
+          let newChatroom = new this.Chatroom(body);
 
-      if (!chatroom) {
-        let newChatroom = new this.Chatroom(body);
-
-        newChatroom.save((err) => {
-          if(err) {
-            return this.response.failure(err);
-          } else {
-            console.log('newChatroom', newChatroom);
-            handlers.sendWelcomeMessage(newChatroom.name);
-            return this.response.success(newChatroom);
-          }
-        });
-      } else {
-        return this.response.success(chatroom);
-      }
-    });
+          newChatroom.save((err) => {
+            if(err) {
+              resolve(this.response.failure(err));
+            } else {
+              console.log('newChatroom', newChatroom);
+              handlers.sendWelcomeMessage(newChatroom.name);
+              resolve(this.response.success(newChatroom));
+            }
+          });
+        } else {
+          resolve(this.response.success(chatroom));
+        }
+      });
+    })
   }
 }
 
