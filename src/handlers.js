@@ -12,7 +12,7 @@ class Handlers {
     console.log('sendMessage', msg);
     return new Promise((resolve, reject) => {
       if (unresolve && msg.chatroom) {
-        // this.unresolveChatroom(msg.chatroom)
+        this.resolveChatroom(msg.chatroom, false);
       }
       let message = new this.Message(msg);
 
@@ -33,14 +33,14 @@ class Handlers {
 
   sendWelcomeMessage (chatroom) {
     console.log('sendWelcomeMessage for', chatroom);
-    return sendMessage({
+    return this.sendMessage({
       chatroom,
-      ...config.welcomeMessage
+      ...this.config.welcomeMessage
     })
   }
 
-  resolveChatroom (name) {
-    console.log('resolveChatroom', name);
+  resolveChatroom (name, isResolved = true) {
+    console.log('resolveChatroom', name, isResolved);
     return new Promise((resolve, reject) => {
       this.Chatroom.findOne({name},(err, chatroom)=> {
         console.log('chatroom', chatroom);
@@ -49,7 +49,7 @@ class Handlers {
           return;
         }
 
-        chatroom.resolved = true;
+        chatroom.resolved = isResolved;
         chatroom.save((err) => {
           if(err) {
             reject(err);
@@ -62,25 +62,7 @@ class Handlers {
       })
     })
   }
-
-  unresolveChatroom (name) {
-    this.Chatroom.findOne({ name },(err, chatroom)=> {
-      console.log('unresolving chatroom', chatroom);
-      if (!chatroom) {
-        // reject(['No chatroom found']);
-        return false;
-      }
-      chatroom.resolved = false;
-      chatroom.save((err) => {
-        if(err) {
-          // reject(err);
-          return false;
-        }
-      })
-    });
-    return true;
-  }
-
+  
   // Route handlers
 
   getMessages () {
@@ -126,7 +108,7 @@ class Handlers {
               resolve(this.response.failure(err));
             } else {
               console.log('newChatroom', newChatroom);
-              handlers.sendWelcomeMessage(newChatroom.name);
+              this.sendWelcomeMessage(newChatroom.name);
               resolve(this.response.success(newChatroom));
             }
           });
